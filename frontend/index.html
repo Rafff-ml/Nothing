@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="OffPad – A lightweight offline-first note-taking app with passkey protection." />
+  <title>OffPad — Offline Notepad</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <!-- Subtle gradient background -->
+  <div class="app-bg"></div>
+
+  <div class="home-container">
+    <div class="card" id="login-card">
+      <div class="brand">
+        <h1 class="glow-text">NOTHING</h1>
+      </div>
+
+      <!-- Initial Action Buttons -->
+      <div id="initial-actions" class="action-group">
+        <button type="button" id="btn-show-open" class="btn btn-primary">Open</button>
+        <button type="button" id="btn-show-create" class="btn btn-secondary">Create</button>
+      </div>
+
+      <!-- Passkey Form (Hidden initially) -->
+      <form id="doc-form" class="hidden" autocomplete="off">
+        <p id="form-title" class="form-title">Enter Passkey</p>
+        <div class="form-group">
+          <input
+            type="password"
+            id="doc-passkey"
+            placeholder="Passkey"
+            required
+          />
+        </div>
+        <div class="btn-group">
+          <button type="submit" id="btn-submit" class="btn btn-primary">Submit</button>
+          <button type="button" id="btn-cancel" class="btn btn-text">Cancel</button>
+        </div>
+      </form>
+
+      <!-- Toast message area -->
+      <div id="toast" class="toast"></div>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

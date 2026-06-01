@@ -1,0 +1,18 @@
+# Database files
+offpad.db
+*.sqlite3
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env
+
+# System files
+.DS_Store
+Thumbs.db

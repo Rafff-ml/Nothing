@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="OffPad Editor – Write and auto-save your notes offline." />
+  <title>OffPad — Editor</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <!-- Subtle gradient background -->
+  <div class="app-bg"></div>
+
+  <div class="editor-layout">
+
+    <!-- Sticky Toolbar -->
+    <header class="toolbar">
+      <div class="toolbar-left">
+        <a href="/" class="toolbar-brand">
+          <span class="brand-subtle">N</span>
+          <span class="brand-text">OffPad</span>
+        </a>
+      </div>
+
+      <div class="toolbar-right">
+        <!-- Save status badge -->
+        <div class="save-status" id="save-status">
+          <span class="save-dot"></span>
+          <span id="save-status-text">Ready</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Editor -->
+    <main class="editor-main">
+      <textarea
+        class="editor-textarea"
+        id="editor"
+        placeholder="Start writing your notes here..."
+      ></textarea>
+
+      <!-- Footer Stats -->
+      <footer class="editor-footer">
+        <div class="stats">
+          <div class="stat">
+            Characters: <strong id="char-count">0</strong>
+          </div>
+          <div class="stat">
+            Words: <strong id="word-count">0</strong>
+          </div>
+        </div>
+        <div class="last-saved-time" id="last-saved-time"></div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
