@@ -8,9 +8,16 @@ const AUTOSAVE_INTERVAL_MS = 3000;
 const SESSION_KEY = "offpad_session_v2"; // changed to invalidate old sessions
 
 async function api(method, path, body = null) {
+  const session = getSession();
+  const headers = { "Content-Type": "application/json" };
+  
+  if (session && session.passkey) {
+    headers["X-Passkey"] = session.passkey;
+  }
+
   const options = {
     method,
-    headers: { "Content-Type": "application/json" },
+    headers,
   };
   if (body) {
     options.body = JSON.stringify(body);
@@ -18,6 +25,9 @@ async function api(method, path, body = null) {
   const res = await fetch(`${API_BASE}${path}`, options);
   const data = await res.json();
   if (!res.ok) {
+    if (res.status === 429) {
+      throw new Error("Too many requests. Please try again later.");
+    }
     throw new Error(data.detail || "Something went wrong.");
   }
   return data;
@@ -172,7 +182,7 @@ function initEditorPage() {
   async function loadDocument() {
     setSaveStatus("saving", "Loading…");
     try {
-      const doc = await api("GET", `/documents/${encodeURIComponent(passkey)}`);
+      const doc = await api("GET", `/documents`);
       editor.value = doc.content || "";
       lastSavedContent = editor.value;
       setSaveStatus("saved", "Saved");
@@ -194,7 +204,7 @@ function initEditorPage() {
     setSaveStatus("saving", "Saving…");
 
     try {
-      await api("PUT", `/documents/${encodeURIComponent(passkey)}`, {
+      await api("PUT", `/documents`, {
         content: currentContent,
       });
       lastSavedContent = currentContent;

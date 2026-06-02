@@ -25,7 +25,6 @@ class DocumentUpdate(BaseModel):
 class DocumentResponse(BaseModel):
     """Schema returned after creating or retrieving a document."""
     id: int
-    passkey: str
     content: str
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None

@@ -5,13 +5,25 @@ All database interactions are encapsulated here for clean separation of concerns
 
 from sqlalchemy.orm import Session
 from . import models, schemas
+from .config import settings
 from datetime import datetime, timezone
+import hashlib
+
+def hash_passkey(passkey: str) -> str:
+    """Return a PBKDF2-HMAC-SHA256 hash of the passkey using the secret pepper as salt."""
+    return hashlib.pbkdf2_hmac(
+        'sha256',
+        passkey.encode("utf-8"),
+        settings.SECRET_PEPPER.encode("utf-8"),
+        600000
+    ).hex()
 
 
 def get_document_by_passkey(db: Session, passkey: str) -> models.Document | None:
     """Retrieve a document by its unique passkey. Returns None if not found."""
+    hashed = hash_passkey(passkey)
     return db.query(models.Document).filter(
-        models.Document.passkey == passkey
+        models.Document.passkey == hashed
     ).first()
 
 
@@ -21,7 +33,7 @@ def create_document(db: Session, doc: schemas.DocumentAuth) -> models.Document:
     Content starts empty. Timestamps are set automatically by the database.
     """
     db_document = models.Document(
-        passkey=doc.passkey,
+        passkey=hash_passkey(doc.passkey),
         content="",
     )
     db.add(db_document)
@@ -42,3 +54,4 @@ def update_document_content(db: Session, passkey: str, content: str) -> models.D
         db.commit()
         db.refresh(document)
     return document
+
